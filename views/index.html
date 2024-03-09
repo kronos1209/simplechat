@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
+    <title>SimpleChat</title>
+</head>
+<body>
+    <h1>SimpleChat</h1>
+    <div hx-ext="ws" ws-connect="/entry">
+        <form id="chat-form" hx-post="/post" hx-target="#chat-room" hx-swap="beforeend">
+            <input name="Name" type="text" placeholder="input username..."
+                onkeyup="this.setCustomValidity('')"
+                hx-on:htmx:validation:validate="if(this.value == '') {
+                this.setCustomValidity('ユーザ名を入力してください') // set the validation error
+                htmx.find('#chat-form').reportValidity()              // report the issue
+            }">
+            <input name="Message" type="textarea" placeholder="input send message..."
+                onkeyup="this.setCustomValidity('')"
+                hx-on:htmx:validation:validate="if(this.value == '') {
+                this.setCustomValidity('メッセージを入力してください') // set the validation error
+                htmx.find('#chat-form').reportValidity()              // report the issue
+            }">
+            <button>send</button>
+        </form>
+    </div>
+    <div id="chat-room">
+        {{ range . }}
+            {{ template "message" . }}
+        {{ end }}
+    </div>
+</body>
+</html>
