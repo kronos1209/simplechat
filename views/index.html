@@ -10,7 +10,7 @@
 <body>
     <h1>SimpleChat</h1>
     <div hx-ext="ws" ws-connect="/entry">
-        <form id="chat-form" hx-post="/post" hx-target="#chat-room" hx-swap="beforeend">
+        <form id="chat-form" hx-post="/post">
             <input name="Name" type="text" placeholder="input username..."
                 onkeyup="this.setCustomValidity('')"
                 hx-on:htmx:validation:validate="if(this.value == '') {
